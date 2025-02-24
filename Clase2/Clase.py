@@ -21,7 +21,7 @@ logging.critical('este mensaje es del critical')
 logging.basicConfig(
     level=logging.DEBUG,
     format='%(asctime)s - %(levelname)s - %(message)s',
-    filename='registro.log',
+    filename='Registro.log',
     filemode='a'
     )
 @dataclass
