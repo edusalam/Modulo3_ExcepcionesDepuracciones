@@ -102,7 +102,7 @@ def procesarPedidos():
     finally:
         print('operacion finalizada')
 procesarPedidos()
-'''
+
                #ULTIMO EJERCICIO, EXCEPCIONES PERSONALIZADAS
 class ErrorDePago(Exception):
     def __init__(objeto, message = 'el producto no esta disponible en stock'):
@@ -132,7 +132,52 @@ class pasarelaDePagos():
         procesar_pago_cliente('jose','43526', 99.80) 
         procesar_pago_cliente('luis','123', 100)
         procesar_pago_cliente('miriam','256', 0)
-        
+
+#ARCHIVOS LOGS_REGISTROS DE EVENTOS       
+import logging
+
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='%(asctime)s - %(levelname)s - %(message)s'
+)
+
+logging.debug('este mensaje del debug')
+logging.info('este mensaje del INFO')
+logging.warning('este mensaje del WARNING')
+logging.critical('este mensaje del critico')
+logging.error('este mensaje es para el error')
+'''
+#app que permite llevar seguimiento de compras y fallos en este tipo de transaccion
+#esta app, registrara la canntidad de productos comprados, confirmacion de compra y error en estas trasacciones
+
+import logging
+from dataclasses import dataclass, field
+
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='%(asctime)s - %(levelname)s - %(message)s'
+    filename='registro.log'
+    filemode='a'
+    )
+@dataclass
+class Producto:
+    nombre = str
+    precio = float
+    cantidad = int
+
+    def comprar(self, cantidad : int):
+        if cantidad > self.cantidad:
+            logging.error(f'error: no hay suficiente cantidad del producto{self.nombre}, el stock disponibbbble es de {self.cantidad}')
+            raise ValueError(f'error: no hay suficiente cantidad del producto{self.nombre}, el stock disponibbbble es de {self.cantidad}')
+        else:
+            self.cantidad -= cantidad
+            logging.info(f'la compra fue exitosa. el stock restante es {self.cantidad}')
+            return self.precio * cantidad
+@dataclass
+class Tienda:
+    Productos: list[Producto] = field(dafault_factory= list)
+    
+
 
 
 
