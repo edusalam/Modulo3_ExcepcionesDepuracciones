@@ -104,9 +104,34 @@ def procesarPedidos():
 procesarPedidos()
 '''
                #ULTIMO EJERCICIO, EXCEPCIONES PERSONALIZADAS
-class ErrorProducto(Exception):
+class ErrorDePago(Exception):
     def __init__(objeto, message = 'el producto no esta disponible en stock'):
         objeto.message = message
+        
+class pasarelaDePagos():
+    @staticmethod
+    def procesar_pago(numero_tarjeta, monto):
+        if not numero_tarjeta.Startswith('4'):
+            raise ErrorDePago('el numero de la tarjeta no es valida')
+        if monto <= 0:
+            raise ErrorDePago('el monto debe ser mayor a cero')
+        return f'pago del{monto} fue procesado conn exito'
+    def procesar_pago_cliente(nombre_cliente, numero_tarjeta, monto):
+        try:
+            print(f'iniciando el proceso de pago para {nombre_cliente}')
+            resultado = pasarelaDePagos.procesar_pago(numero_tarjeta, monto)
+        except ErrorDePago as e:
+            print(f'error al procesar el pago. {e}')
+        except Exception as e:
+            print(f'se produjo un error inesperado. {e}')
+        else:
+            print(resultado)
+        finally:
+            print('registro finalizado')
+    if __name__ == '__main__':
+        procesar_pago_cliente('jose','43526', 99.80) 
+        procesar_pago_cliente('luis','123', 100)
+        procesar_pago_cliente('miriam','256', 0)
         
 
 
