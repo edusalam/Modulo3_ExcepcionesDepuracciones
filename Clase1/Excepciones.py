@@ -146,7 +146,7 @@ logging.info('este mensaje del INFO')
 logging.warning('este mensaje del WARNING')
 logging.critical('este mensaje del critico')
 logging.error('este mensaje es para el error')
-'''
+
 #app que permite llevar seguimiento de compras y fallos en este tipo de transaccion
 #esta app, registrara la canntidad de productos comprados, confirmacion de compra y error en estas trasacciones
 
@@ -155,15 +155,15 @@ from dataclasses import dataclass, field
 
 logging.basicConfig(
     level=logging.DEBUG,
-    format='%(asctime)s - %(levelname)s - %(message)s'
-    filename='registro.log'
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    filename='registro.log',
     filemode='a'
     )
 @dataclass
 class Producto:
-    nombre = str
-    precio = float
-    cantidad = int
+    nombre: str
+    precio: float
+    cantidad: int
 
     def comprar(self, cantidad : int):
         if cantidad > self.cantidad:
@@ -175,7 +175,29 @@ class Producto:
             return self.precio * cantidad
 @dataclass
 class Tienda:
-    Productos: list[Producto] = field(dafault_factory= list)
+    productos: list[Producto] = field(dafault_factory=list)
+
+    def agregar_producto(self, producto: Producto):
+        self.productos.append(producto)
+        logging.debug(f'{producto.nombre} fue agregado con exito. el precio es de {producto.precio}-cantidad: {producto.cantidad} unidades en stock')
+    
+    def realizar_compra(self, nombre_producto: str, cantidad: int):
+        producto = next((p for p in self.productos if p.nombre == nombre_producto), None)
+        if producto:
+            try:
+                total = producto.comprar(cantidad)
+                logging.info(f'compra realizada: {cantidad} unidades de {nombre_producto} por un total de ${total}')
+                return total
+            except ValueError as e:
+                logging.error(f'error al efectural la compra: {e}')
+            else:
+                loggin.warning(f'Producto fuera de stock')
+if __name__ == '__main__':
+    tienda = Tienda()
+    inventario_portatil = Producto(nombre='portatil', precio=1000, cantidad=10)
+    tienda.agregar_producto(inventario_portatil)
+    tienda.realizar_compra('portatil', 4 )
+'''
     
 
 
