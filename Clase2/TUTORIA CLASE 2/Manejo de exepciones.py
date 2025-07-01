@@ -31,8 +31,8 @@ finally:
 try: 
     num=int(input('ingrese un  numero valido.'))
     resultado = 10/num
-except ValueError:
-    print('error: no ingresaste un nummero valido')
-except ZeroDivisionError:
-    print('error: no se puede dividir por cero')
+except (ValueError, ZeroDivisionError) as e:
+    print(f'Error: {e}')
+    
+
 
