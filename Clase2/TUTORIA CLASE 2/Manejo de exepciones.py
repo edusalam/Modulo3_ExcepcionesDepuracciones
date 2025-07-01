@@ -26,13 +26,26 @@ finally:
        print('archivo cerrado')
     except NameError:
        print('el archhivo no se abrio, no hay que cerrar')
-'''
+
 #MANEJO DE MULTIPLES EXCEPCOINES, SE PUEDEN MANEJAR MULTIPLES EXCEPCIONES EN EL BLOQUE SEPARADOOS POR EXEP O AGRUPADOS EN UNA TUPLA
 try: 
-    num=int(input('ingrese un  numero valido.'))
+    num=int(input('ingrese un  numero:'))
     resultado = 10/num
-except (ValueError, ZeroDivisionError) as e:
+except (ValueError,ZeroDivisionError) as e:
     print(f'Error: {e}')
     
+'''
+#CREACION DE EXCEPCIONES PERSONALIZADOS
+class MisExcepciones(Exception):
+    def __init__(self, mensaje):
+        super().__init__(mensaje)
+try:
+    edad = int(input('ingrese su edad: '))
+    if edad < 0:
+        raise MisExcepciones('la edad no puede ser negtivo')
+    print(f'tu edad es {edad}')
+except MisExcepciones as e:
+    print(f'Error: {e}')
+
 
 
